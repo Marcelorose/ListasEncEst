@@ -147,6 +147,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Lista_duplamente_encadeada.h" />
+    <ClInclude Include="Lista_encadeada.h" />
+    <ClInclude Include="Lista_estatica.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
