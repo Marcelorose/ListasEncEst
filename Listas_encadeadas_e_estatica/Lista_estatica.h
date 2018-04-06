@@ -86,6 +86,19 @@ bool removerFimListaEstatica(ListaEstatica &l) {
 	l.qtd--;
 }
 
+bool removerPosicaoListaEstatica(ListaEstatica &l, int pos){
+	if (l.qtd == 0)
+	{
+		return false;
+	}
+	for (int i = pos; i < l.qtd - 1; i++)
+	{
+		l.listaEstatica[i] = l.listaEstatica[i = 1];
+	}
+	l.qtd--;
+	return true;
+}
+
 bool bubbleSortListaEstatica(ListaEstatica &l) {
 	if (l.qtd == 0)
 	{
@@ -106,7 +119,6 @@ bool bubbleSortListaEstatica(ListaEstatica &l) {
 	}
 
 }
-
 
 void toViewListaEstatica(ListaEstatica &l) {
 	for (int i = 0; i < TAM; i++)

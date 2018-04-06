@@ -1,14 +1,13 @@
 #ifndef LISTA_ENCADEADA_H
 #define LISTA_ENCADEADA_H
 
+#include <iostream>
 
-struct Monstro {
-	int ataque;
-};
+using namespace std;
 
 
 struct ElementoListaEnc {
-	Monstro dado;
+	int dado;
 	ElementoListaEnc *prox;
 };
 
@@ -22,7 +21,7 @@ void inicializarListaEncadeada(ListaEncadeada &l) {
 	l.qtd = 0;
 }
 
-bool inserirInicioListaEncadeada(ListaEncadeada &l, Monstro mons) {
+bool inserirInicioListaEncadeada(ListaEncadeada &l, int mons) {
 	ElementoListaEnc *novo = new ElementoListaEnc;
 	if (novo == NULL)
 	{
@@ -36,15 +35,15 @@ bool inserirInicioListaEncadeada(ListaEncadeada &l, Monstro mons) {
 
 }
 
-bool inserirFimListaEncadeada(ListaEncadeada &l, Monstro mons) {
+bool inserirFimListaEncadeada(ListaEncadeada &l, int mons) {
+	if (l.qtd == 0)
+	{
+		inserirInicioListaEncadeada(l, mons);
+	}
 	ElementoListaEnc *novo = new ElementoListaEnc;
 	if (novo == NULL)
 	{
 		return false;
-	}
-	if (l.qtd == 0)
-	{
-		return inserirInicioListaEncadeada;
 	}
 	novo->dado = mons;
 	novo->prox = NULL;
@@ -58,12 +57,34 @@ bool inserirFimListaEncadeada(ListaEncadeada &l, Monstro mons) {
 	return true;
 }
 
-bool inserirPosicaoListaEncadeada(ListaEncadeada &l, Monstro mons) {
+bool inserirPosicaoListaEncadeada(ListaEncadeada &l, int mons, int pos) {
+	if (pos < 0 || pos > l.qtd + 1)
+	{
+		return false;
+	}
+	if (pos == 0)
+	{
+		return inserirInicioListaEncadeada(l, mons);
+	}
+	if (pos == l.qtd)
+	{
+		return inserirFimListaEncadeada(l, mons);
+	}
 	ElementoListaEnc *novo = new ElementoListaEnc;
 	if (novo == NULL)
 	{
 		return false;
 	}
+	novo->dado = mons;
+	ElementoListaEnc *nav = l.primeiro;
+	for (int i = 0; i < pos; i++)
+	{
+		nav = nav->prox;
+	}
+	novo->prox = nav->prox;
+	nav->prox = novo;
+	l.qtd++;
+	return true;
 }
 
 bool removerInicioListaEncadeada(ListaEncadeada &l) {
@@ -85,7 +106,7 @@ bool removerFimListaEncadeada(ListaEncadeada &l) {
 		return false;
 	}
 
-	ElementoListaEnc *ultimo;
+	ElementoListaEnc *ultimo = l.primeiro;
 	while (ultimo->prox->prox != NULL)
 	{
 		ultimo = ultimo->prox;
@@ -96,12 +117,64 @@ bool removerFimListaEncadeada(ListaEncadeada &l) {
 	return true;
 }
 
-bool removerPosicaoListaEncadeada(ListaEncadeada &l) {
-
+bool removerPosicaoListaEncadeada(ListaEncadeada &l, int pos) {
+	if (pos < 0 || pos >= l.qtd)
+	{
+		return false;
+	}
+	if (pos == 0)
+	{
+		return removerInicioListaEncadeada(l);
+	}
+	if (pos == l.qtd - 1)
+	{
+		return removerFimListaEncadeada(l);
+	}
+	ElementoListaEnc *save = l.primeiro;
+	for (int i = 0; i < pos - 1; i++)
+	{
+		save = save->prox;
+	}
+	ElementoListaEnc *save1 = save->prox;
+	save->prox = save->prox->prox;
+	delete save1;
+	l.qtd--;
+	return true;
+	
 }
 
 bool bubbleSortListaEncadeada(ListaEncadeada &l) {
+	if (l.qtd == 0)
+	{
+		return false;
+	}
+	ElementoListaEnc *nav = l.primeiro;
+	int aux;
+	for (int i = 0; i < l.qtd; i++)
+	{
+		nav = l.primeiro;
+		for (int j = 0; j < l.qtd - 1; j++)
+		{
+			if (nav->dado > nav->prox->dado)
+			{
+				aux = nav->dado;
+				nav->dado = nav->prox->dado;
+				nav->prox->dado = aux;
+				
+			}
+			nav = nav->prox;
+		}
+	}
+	return true;
+} //fazer //fazer
 
+void toViewListaEncadeada(ListaEncadeada &l) {
+	ElementoListaEnc *nav = l.primeiro;
+	while (nav != NULL)
+	{
+		cout << nav->dado <<"  " << nav << "   " << nav->prox << endl;
+		nav = nav->prox;
+	}
 }
 
 #endif
